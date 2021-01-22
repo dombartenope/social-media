@@ -6,6 +6,21 @@ module.exports =  gql`
         body: String!
         createdAt: String!
         username: String!
+        comments: [Comment]!
+        likes: [Like]!
+        likeCount: Int!
+        commentCount: Int!
+    }
+    type Comment {
+        id: ID!
+        createdAt: String!
+        username: String!
+        body: String!
+    }
+    type Like {
+        id: ID!
+        createdAt: String!
+        username: String!
     }
     type User {
         id: ID!
@@ -22,8 +37,18 @@ module.exports =  gql`
     }
     type Query {
         getPosts: [Post]
+        getPost(postId: ID!): Post
     }
     type Mutation {
         register(registerInput: RegisterInput): User!
+        login(username: String!, password: String!): User!
+        createPost(body: String!): Post!
+        deletePost(postId: ID!): String!
+        likePost(postId: ID!): Post! #Works as a toggle so no 'unlike' will be needed
+        createComment(postId: String!, body: String!): Post!
+        deleteComment(postId: ID!, commentId: ID!): Post!
+    }
+    type Subscription{
+        newPost: Post!
     }
 `;
